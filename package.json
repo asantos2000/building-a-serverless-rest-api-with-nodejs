@@ -4,8 +4,8 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "offline": "sls offline start --skipCacheInvalidation",
-    "pretest": "eslint --ignore-path .gitignore ."
+    "pretest": "eslint --ignore-path .gitignore .",
+    "offline": "nodemon --exec sls offline start --skipCacheInvalidation"
   },
   "keywords": [],
   "author": "Adnan Rahić",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-strongloop": "^2.1.0",
+    "nodemon": "^1.17.5",
     "serverless-offline": "^3.25.4"
   },
   "dependencies": {
