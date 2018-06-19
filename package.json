@@ -4,16 +4,19 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "offline": "sls offline start --skipCacheInvalidation"
+    "offline": "sls offline start --skipCacheInvalidation",
+    "pretest": "eslint --ignore-path .gitignore ."
   },
   "keywords": [],
   "author": "Adnan Rahić",
   "license": "MIT",
   "devDependencies": {
-    "serverless-offline": "^3.16.0"
+    "eslint": "^4.19.1",
+    "eslint-config-strongloop": "^2.1.0",
+    "serverless-offline": "^3.25.4"
   },
   "dependencies": {
     "dotenv": "^4.0.0",
-    "mongoose": "^5.0.0-rc0"
+    "mongoose": "^5.1.5"
   }
 }
