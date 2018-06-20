@@ -9,7 +9,7 @@ module.exports.create = (event, context, callback) => {
       Note.create(JSON.parse(event.body))
     )
     .then(note => callback(null, {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify(note),
     }))
     .catch(err => callback(null, {
@@ -81,12 +81,7 @@ module.exports.delete = (event, context, callback) => {
       Note.findByIdAndRemove(event.pathParameters.id)
     )
     .then(note => callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(
-        {
-          message: 'Removed note with id: ' + note._id, note: note,
-        }
-      ),
+      statusCode: 204,
     }))
     .catch(err => callback(null, {
       statusCode: err.statusCode || 500,
