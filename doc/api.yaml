@@ -1,0 +1,331 @@
+---
+openapi: 3.0.0
+info:
+  title: Notes
+  description: Exemplo de api para registro de notas
+  contact:
+    name: Anderson Santos
+    url: http://localhost/contracts
+    email: anderson@sysmap.com.br
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+paths:
+  /notes:
+    get:
+      summary: Retrieve all notes
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notes'
+              examples:
+                Found:
+                  summary: Return a list
+                  value: |-
+                    [
+                    {
+                        "_id": "abc123",
+                        "title": "This is a note.",
+                        "description": "This is the note content."
+                    },
+                    {
+                        "_id": "abc123",
+                        "title": "This is a note.",
+                        "description": "This is the note content."
+                    }
+                    ]
+                Not Found:
+                  summary: Return a empty list
+                  value: '[]'
+        401:
+          description: Problema com o token. Você tem acesso a este recurso?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+      security:
+      - apikey: []
+    post:
+      summary: Cria uma nota
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+            examples:
+              Cria uma nota com o id atribuído:
+                value:
+                  id: abc123
+                  title: This is a note.
+                  description: This is the note content.
+              Cria uma nota e deixa a api atribuir um id:
+                value:
+                  title: This is a note.
+                  description: This is the note content.
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+              examples:
+                Nota criada:
+                  value:
+                    _id: abc123
+                    title: This is a note.
+                    description: This is the note content.
+        400:
+          description: Alguma coisa está errada com o corpo do seu request. Você passou
+            todos os parametros obrigatórios?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Validação do valor do parâmetro:
+                  summary: Valor do atributo
+                  value:
+                    message: 800
+                    type: Title is too long. The Title field should not exceed 60
+                      characters.
+                    code: ValidatioException
+                Validação da obrigatoriedade do parametro:
+                  summary: Falta de atributo
+                  value:
+                    message: 810
+                    type: O título é obrigatório. Você deve informa-lo na sua requisição
+                    code: ValidatioException
+                Id existente:
+                  summary: Tentativa de criar uma nota com um id que existe. Para
+                    atualizar utilize o método PUT.
+                  value:
+                    message: 820
+                    type: ID já existe. Caso queira criar com um id diferente, remova-o
+                      da requisição.
+                    code: ValidatioException
+        401:
+          content:
+            application/json:
+              examples:
+                Problema com o token:
+                  value:
+                    message: 600
+                    type: Problema de autorização neste servidor, verifique a validade
+                      do token.
+                    code: AuthenticationException
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+              examples:
+                Sem perfil para acessar este recurso:
+                  value:
+                    message: 300
+                    type: Você não tem permissão para acessar este recurso.
+                    code: AuthorizationException
+      security:
+      - apikey: []
+    servers:
+    - url: http://localhost:5000
+      description: Test e development
+  /notes/{id}:
+    get:
+      summary: Retrieve all notes
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notes'
+              examples:
+                Registro encontrado:
+                  value:
+                    _id: abc123
+                    title: This is a note.
+                    description: This is the note content.
+        401:
+          description: Problema com o token. Você tem acesso a este recurso?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        404: {}
+      security:
+      - apikey: []
+    put:
+      summary: Atualiza uma nota
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+            examples:
+              Atualiza todos os atributos:
+                value:
+                  title: This is a note.
+                  description: This is the note content.
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        400:
+          description: Alguma coisa está errada com o corpo do seu request. Você passou
+            todos os parametros obrigatórios?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                Validação do valor do parâmetro:
+                  summary: Valor do atributo
+                  value:
+                    message: 800
+                    type: Title is too long. The Title field should not exceed 60
+                      characters.
+                    code: ValidatioException
+                Validação da obrigatoriedade do parametro:
+                  summary: Falta de atributo
+                  value:
+                    message: 810
+                    type: O título é obrigatório. Você deve informa-lo na sua requisição
+                    code: ValidatioException
+                ID informado.:
+                  summary: ID não pode ser atualizado
+                  value:
+                    message: 820
+                    type: O id não pode ser atualizado, remova-o da requisição.
+                    code: ValidatioException
+        401:
+          content:
+            application/json:
+              examples:
+                Problema com o token:
+                  value:
+                    message: 600
+                    type: Problema de autorização neste servidor, verifique a validade
+                      do token.
+                    code: AuthenticationException
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+              examples:
+                Sem perfil para acessar este recurso:
+                  value:
+                    message: 300
+                    type: Você não tem permissão para acessar este recurso.
+                    code: AuthorizationException
+        404: {}
+      security:
+      - apikey: []
+    delete:
+      summary: Remove uma nota
+      operationId: id
+      responses:
+        204: {}
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        404: {}
+      security:
+      - apikey: []
+    servers:
+    - url: http://localhost:5000
+      description: Desenvolvimento e mock
+components:
+  schemas:
+    Note:
+      required:
+      - title
+      - description
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+    Notes:
+      required:
+      - Note
+      properties:
+        Note:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+    AuthorizationError:
+      title: Root Type for AuthorizationError
+      description: The root of the AuthorizationError type's schema.
+      required:
+      - code
+      - type
+      type: object
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+        code:
+          type: number
+    AuthenticationError:
+      title: Root Type for AuthenticationError
+      description: The root of the AuthenticationError type's schema.
+      type: object
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+        code:
+          type: number
+    ValidationError:
+      title: Root Type for ValidationError
+      description: The root of the ValidationError type's schema.
+      type: object
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+        code:
+          type: number
+  securitySchemes:
+    apikey:
+      type: apiKey
+      name: apikey
+      in: header
+security:
+- apikey: []
+tags:
+- name: notas
+  description:
+- name: api
+  description:
+- name: workshop
+  description:
