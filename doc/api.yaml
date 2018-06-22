@@ -14,9 +14,10 @@ info:
 paths:
   /notes:
     get:
-      summary: Retrieve all notes
+      summary: Recupera todas as notas
       responses:
         200:
+          description: Retorna todos as notas encontradas.
           content:
             application/json:
               schema:
@@ -49,6 +50,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthenticationError'
         403:
+          description: Não tem autorização para acessar notas.
           content:
             application/json:
               schema:
@@ -75,6 +77,7 @@ paths:
         required: true
       responses:
         200:
+          description: Nota criada
           content:
             application/json:
               schema:
@@ -115,6 +118,7 @@ paths:
                       da requisição.
                     code: ValidatioException
         401:
+          description: Problema com o token. Você tem acesso a este recurso?
           content:
             application/json:
               examples:
@@ -125,6 +129,7 @@ paths:
                       do token.
                     code: AuthenticationException
         403:
+          description: Não tem autorização para criar notas.
           content:
             application/json:
               schema:
@@ -142,9 +147,10 @@ paths:
       description: Test e development
   /notes/{id}:
     get:
-      summary: Retrieve all notes
+      summary: Retorna uma nota
       responses:
         200:
+          description: Retorna uma nota
           content:
             application/json:
               schema:
@@ -156,17 +162,19 @@ paths:
                     title: This is a note.
                     description: This is the note content.
         401:
-          description: Problema com o token. Você tem acesso a este recurso?
+          description: Problema com o token. Você tem acesso a esta nota?
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationError'
         403:
+          description: Não tem permissão para acessar esta nota.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorizationError'
-        404: {}
+        404:
+          description: Nota não encontrado.
       security:
       - apikey: []
     put:
@@ -184,6 +192,7 @@ paths:
         required: true
       responses:
         200:
+          description: Nota atualizada.
           content:
             application/json:
               schema:
@@ -216,6 +225,7 @@ paths:
                     type: O id não pode ser atualizado, remova-o da requisição.
                     code: ValidatioException
         401:
+          description: Problema com o token. Você tem acessar esta API?
           content:
             application/json:
               examples:
@@ -226,6 +236,7 @@ paths:
                       do token.
                     code: AuthenticationException
         403:
+          description: Não tem permissão para atualizar esta nota.
           content:
             application/json:
               schema:
@@ -236,25 +247,30 @@ paths:
                     message: 300
                     type: Você não tem permissão para acessar este recurso.
                     code: AuthorizationException
-        404: {}
+        404:
+          description: Nota não encontrado.
       security:
       - apikey: []
     delete:
-      summary: Remove uma nota
+      summary: Apaga uma nota
       operationId: id
       responses:
-        204: {}
+        204:
+          description: Nota apagada.
         401:
+          description: Problema com o token. Você tem acessar esta API?
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationError'
         403:
+          description: Não tem permissão para apagar esta nota.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorizationError'
-        404: {}
+        404:
+          description: Nota não encontrado.
       security:
       - apikey: []
     servers:
