@@ -281,6 +281,8 @@ paths:
       in: path
       description: Identificador de uma nota
       required: true
+      schema:
+        type: string
 components:
   schemas:
     Note:
