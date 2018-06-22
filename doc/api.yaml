@@ -276,6 +276,11 @@ paths:
     servers:
     - url: http://localhost:5000
       description: Desenvolvimento e mock
+    parameters:
+    - name: id
+      in: path
+      description: Identificador de uma nota
+      required: true
 components:
   schemas:
     Note:
