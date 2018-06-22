@@ -20,7 +20,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Notes'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
               examples:
                 Found:
                   summary: Return a list
@@ -146,7 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Notes'
+                $ref: '#/components/schemas/Note'
               examples:
                 Registro encontrado:
                   value:
@@ -271,14 +273,6 @@ components:
           type: string
         description:
           type: string
-    Notes:
-      required:
-      - Note
-      properties:
-        Note:
-          type: array
-          items:
-            $ref: '#/components/schemas/Note'
     AuthorizationError:
       title: Root Type for AuthorizationError
       description: The root of the AuthorizationError type's schema.
